@@ -1,3 +1,4 @@
+
 #### Imports et définition des variables globales
 
 import random
@@ -33,8 +34,11 @@ def read_data(filename):
     >>> mots[166128]
     'gloire'
     """
+    with open(filename, 'r', encoding='utf-8') as f:
+        return [line.strip() for line in f]
     
-    return None
+    return None 
+
 
 
 def ensemble_mots(filename):
@@ -56,8 +60,10 @@ def ensemble_mots(filename):
     >>> "glycosudrique" in mots
     False
     """
-    
-    return None
+    with open(filename, 'r', encoding='utf-8') as f:
+        return {line.strip() for line in f}
+    return None 
+
 
 
 def mots_de_n_lettres(mots, n):
@@ -86,7 +92,7 @@ def mots_de_n_lettres(mots, n):
     ['anticonstitutionnellement', 'oto-rhino-laryngologistes']
     """
     
-    return None
+    return {mot for mot in mots if len(mot) == n}
 
 
 def mots_avec(mots, s):
@@ -112,8 +118,7 @@ def mots_avec(mots, s):
     >>> sorted(list(mk))[999::122]
     ['képi', 'nickela', 'parkérisiez', 'semi-coke', 'stockais', 'week-end']
     """
-    
-    return None
+    return {mot for mot in mots if s in mot}
 
 
 def cherche1(mots, start, stop, n):
@@ -169,10 +174,20 @@ def cherche2(mots, lstart, lmid, lstop, nmin, nmax):
 
 
 def main():
-    pass
     mots = read_data(FILENAME)
     ens = ensemble_mots(FILENAME)
-    # print( [ mot for mot in ["chronophage", "procrastinateur", "dangerosité", "gratifiant"] if mot in ens ] )
+    mots_a_verifier = ["chronophage", "procrastinateur", "dangerosité", "gratifiant"]
+    for mot in mots_a_verifier:
+        if mot in ens:
+            print(f"Le mot '{mot}' est présent.")
+        else:
+            print(f"Le mot '{mot}' n'est pas présent.")
+
+    mots_10_lettres = mots_de_n_lettres(ens, 10)
+    print(f"Nombre de mots de 7 lettres : {len(mots_10_lettres)}")
+    mots_10_exemples = random.sample(list(mots_10_lettres), 5)
+    print(mots_10_exemples)
+    print (f'nombre de mots contenant un k : {len(mots_avec(ens, "k"))}')
     # m17 = mots_de_n_lettres(ens, 17)
     # print(len(m17))
     # print( random.sample(list(m17), 10) )
